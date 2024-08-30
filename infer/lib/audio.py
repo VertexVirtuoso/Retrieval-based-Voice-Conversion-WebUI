@@ -31,8 +31,8 @@ def wav2(i, o, format):
 
 
 def audio2(i, o, format, sr):
-    inp = av.open(i, "rb")
-    out = av.open(o, "wb", format=format)
+    inp = av.open(i, "r")  # "rb"에서 "r"로 변경
+    out = av.open(o, "w", format=format)  # "wb"에서 "w"로 변경
     if format == "ogg":
         format = "libvorbis"
     if format == "f32le":
@@ -60,7 +60,7 @@ def load_audio(file, sr):
     try:
         with open(file, "rb") as f:
             with BytesIO() as out:
-                audio2(f, out, "f32le", sr)
+                audio2(file, out, "f32le", sr)  # Use the file path instead of f.read()
                 return np.frombuffer(out.getvalue(), np.float32).flatten()
 
     except AttributeError:
